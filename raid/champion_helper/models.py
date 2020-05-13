@@ -9,6 +9,9 @@ class Champion(models.Model):
     """
 
     name = models.CharField(max_length=100, unique=True)
+    # TODO: Figure out how I want to handle alliances...
+    # alliances have upto 4 factions, but a faction
+    # only belongs to 1 alliance
     # May want to switch this to a foreign key
     alliance = models.CharField(max_length=100)
     FACTIONS = (
