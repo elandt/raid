@@ -11,21 +11,20 @@ class Champion(models.Model):
     name = models.CharField(max_length=100, unique=True)
     # May want to switch this to a foreign key
     alliance = models.CharField(max_length=100)
-    # TODO: Re-evaluate the abbreviations
     FACTIONS = (
-        ("BL", "Banner Lords"),
-        ("HE", "High Elves"),
-        ("TSO", "The Sacred Order"),
-        ("B", "Barbarians"),
-        ("OT", "Ogryn Tribes"),
-        ("L", "Lizardmen"),
-        ("S", "Skinwalkers"),
-        ("O", "Orcs"),
-        ("DE", "Demonspawn"),
-        ("UH", "Undead Hordes"),
-        ("DAE", "Dark Elves"),
-        ("KR", "Knight Revenant"),
-        ("DW", "Dwarves"),
+        ("banner_lords", "Banner Lords"),
+        ("high_elves", "High Elves"),
+        ("sacred_order", "The Sacred Order"),
+        ("barbarians", "Barbarians"),
+        ("ogryn_tribes", "Ogryn Tribes"),
+        ("lizardmen", "Lizardmen"),
+        ("skinwalkers", "Skinwalkers"),
+        ("orcs", "Orcs"),
+        ("demonspawn", "Demonspawn"),
+        ("undead_hordes", "Undead Hordes"),
+        ("dark_elves", "Dark Elves"),
+        ("knight_revenant", "Knight Revenant"),
+        ("dwarves", "Dwarves"),
     )
     faction = models.CharField(max_length=50, choices=FACTIONS)
     RARITIES = (
