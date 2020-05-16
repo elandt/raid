@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, Q, F
 
 # Create your models here.
 
@@ -76,6 +76,30 @@ class Affinity(models.Model):
         "Affinity",
         on_delete=models.PROTECT,
         null=True)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=(
+                    # Both strength and weakness are null
+                    (Q(strength__isnull=True) &
+                        Q(weakness__isnull=True)) |
+                    # OR neither are null AND they are not equal
+                    (Q(strength__isnull=False) &
+                        Q(weakness__isnull=False) &
+                        ~Q(strength__eq=F("weakness")))
+                ),
+                name="strength_weakness_are_both_null_or_populated_and_diff"),
+            models.UniqueConstraint(
+                fields=["strength", "weakness"],
+                name="unique_strength_weakness_pair"),
+            models.UniqueConstraint(
+                fields="strength",
+                name="unique_strength"),
+            models.UniqueConstraint(
+                fields="weakness",
+                name="unique_weakness")
+        ]
 
 
 class Champion(models.Model):
