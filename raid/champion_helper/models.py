@@ -1,4 +1,5 @@
-from django.db import models, Q, F
+from django.db import models
+from django.db.models import Q, F
 
 # Create your models here.
 
@@ -20,7 +21,7 @@ class Alliance(models.Model):
         ("nyresan_union", "Nyresan Union"),
     )
 
-    name = models.CharField(max_length=50, choices=ALLIANCES)
+    name = models.CharField(max_length=50, choices=ALLIANCES, unique=True)
 
     def __str__(self):
         return self.name
@@ -47,11 +48,18 @@ class Faction(models.Model):
         ("knight_revenant", "Knight Revenant"),
         ("dwarves", "Dwarves"),
     )
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     alliance = models.ForeignKey(Alliance, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "alliance"],
+                name="unique_faction_alliance_pair"),
+        ]
 
 
 class Affinity(models.Model):
@@ -67,15 +75,17 @@ class Affinity(models.Model):
         ("spirit", "Spirit"),
         ("void", "Void"),
     )
-    name = models.CharField(max_length=6, choices=AFFINITIES)
+    name = models.CharField(max_length=6, choices=AFFINITIES, unique=True)
     strength = models.OneToOneField(
         "Affinity",
         on_delete=models.PROTECT,
-        null=True)
+        null=True,
+        related_name="strong_against")
     weakness = models.OneToOneField(
         "Affinity",
         on_delete=models.PROTECT,
-        null=True)
+        null=True,
+        related_name="weak_against")
 
     class Meta:
         constraints = [
@@ -92,13 +102,7 @@ class Affinity(models.Model):
                 name="strength_weakness_are_both_null_or_populated_and_diff"),
             models.UniqueConstraint(
                 fields=["strength", "weakness"],
-                name="unique_strength_weakness_pair"),
-            models.UniqueConstraint(
-                fields="strength",
-                name="unique_strength"),
-            models.UniqueConstraint(
-                fields="weakness",
-                name="unique_weakness")
+                name="unique_strength_weakness_pair")
         ]
 
 
