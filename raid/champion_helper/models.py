@@ -57,8 +57,8 @@ class Faction(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["name", "alliance"],
-                name="unique_faction_alliance_pair"),
+                fields=["name", "alliance"], name="unique_faction_alliance_pair"
+            ),
         ]
 
 
@@ -77,32 +77,30 @@ class Affinity(models.Model):
     )
     name = models.CharField(max_length=6, choices=AFFINITIES, unique=True)
     strength = models.OneToOneField(
-        "Affinity",
-        on_delete=models.PROTECT,
-        null=True,
-        related_name="strong_against")
+        "Affinity", on_delete=models.PROTECT, null=True, related_name="strong_against"
+    )
     weakness = models.OneToOneField(
-        "Affinity",
-        on_delete=models.PROTECT,
-        null=True,
-        related_name="weak_against")
+        "Affinity", on_delete=models.PROTECT, null=True, related_name="weak_against"
+    )
 
     class Meta:
         constraints = [
             models.CheckConstraint(
                 check=(
                     # Both strength and weakness are null
-                    (Q(strength__isnull=True) &
-                        Q(weakness__isnull=True)) |
+                    (Q(strength__isnull=True, weakness__isnull=True))
+                    |
                     # OR neither are null AND they are not equal
-                    (Q(strength__isnull=False) &
-                        Q(weakness__isnull=False) &
-                        ~Q(strength__eq=F("weakness")))
+                    (
+                        Q(strength__isnull=False, weakness__isnull=False)
+                        & ~Q(strength_id=F("weakness"))
+                    )
                 ),
-                name="strength_weakness_are_both_null_or_populated_and_diff"),
+                name="strength_weakness_are_both_null_or_populated_and_diff",
+            ),
             models.UniqueConstraint(
-                fields=["strength", "weakness"],
-                name="unique_strength_weakness_pair")
+                fields=["strength", "weakness"], name="unique_strength_weakness_pair"
+            ),
         ]
 
 
