@@ -10,9 +10,10 @@ class AffintyAdmin(admin.ModelAdmin):
     empty_value_display = "-empty-"
     list_display = ("name", "strength", "weakness")
 
+
 @admin.register(Alliance, Faction)
 class AllianceFactionAdmin(admin.ModelAdmin):
-
+    # TODO: figure out how I want to customize this.
     pass
 
 
