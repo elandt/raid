@@ -24,7 +24,7 @@ class Alliance(models.Model):
     name = models.CharField(max_length=50, choices=ALLIANCES, unique=True)
 
     def __str__(self):
-        return self.name
+        return self.get_name_display()
 
 
 class Faction(models.Model):
@@ -52,7 +52,7 @@ class Faction(models.Model):
     alliance = models.ForeignKey(Alliance, on_delete=models.PROTECT)
 
     def __str__(self):
-        return self.name
+        return self.get_name_display()
 
     class Meta:
         constraints = [
@@ -94,7 +94,7 @@ class Affinity(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return self.get_name_display()
 
     class Meta:
         constraints = [
