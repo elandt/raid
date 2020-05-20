@@ -15,7 +15,7 @@ class Alliance(models.Model):
     """
 
     ALLIANCES = (
-        ("telarians", "Telarians"),
+        ("telerians", "Telerians"),
         ("gaellen_pact", "Gaellen Pact"),
         ("corrupted", "The Corrupted"),
         ("nyresan_union", "Nyresan Union"),
@@ -48,7 +48,7 @@ class Faction(models.Model):
         ("knight_revenant", "Knight Revenant"),
         ("dwarves", "Dwarves"),
     )
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, choices=FACTIONS, unique=True)
     alliance = models.ForeignKey(Alliance, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -76,15 +76,29 @@ class Affinity(models.Model):
         ("void", "Void"),
     )
     name = models.CharField(max_length=6, choices=AFFINITIES, unique=True)
+    # TODO: Why do I need null=True and blank=True??
+    # TODO: Look at docs - they probably has the answer
     strength = models.OneToOneField(
-        "Affinity", on_delete=models.PROTECT, null=True, related_name="strong_against"
+        "Affinity",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="strong_against",
     )
     weakness = models.OneToOneField(
-        "Affinity", on_delete=models.PROTECT, null=True, related_name="weak_against"
+        "Affinity",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="weak_against",
     )
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         constraints = [
+            # May need to drop this constraint to enter data
             models.CheckConstraint(
                 check=(
                     # Both strength and weakness are null
@@ -134,7 +148,7 @@ class Champion(models.Model):
         return self.name
 
 
-class Ratings(models.Model):
+class Rating(models.Model):
     """
     Represents the ratings for a Champion
     Ratings range from 0 - 5, with 1 decimal place
@@ -155,3 +169,6 @@ class Ratings(models.Model):
     force = models.DecimalField(max_digits=2, decimal_places=1)
     magic = models.DecimalField(max_digits=2, decimal_places=1)
     spirit = models.DecimalField(max_digits=2, decimal_places=1)
+
+    def __str__(self):
+        return f"{self.champion.name}'s rating"
