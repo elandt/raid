@@ -98,7 +98,6 @@ class Affinity(models.Model):
 
     class Meta:
         constraints = [
-            # May need to drop this constraint to enter data
             models.CheckConstraint(
                 check=(
                     # Both strength and weakness are null
