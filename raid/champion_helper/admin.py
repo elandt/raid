@@ -11,12 +11,35 @@ class AffintyAdmin(admin.ModelAdmin):
     list_display = ("name", "strength", "weakness")
 
 
-@admin.register(Alliance, Faction)
+class FactionInline(admin.TabularInline):
+    model = Faction
+    fk_name = "alliance"
+
+
+@admin.register(Alliance)
 class AllianceFactionAdmin(admin.ModelAdmin):
-    # TODO: figure out how I want to customize this.
-    pass
+    # TODO: May still want to do more customizations...
+    # but good enough for now
+    inlines = [
+        FactionInline
+    ]
+    empty_value_display = "-empty-"
+    list_display = ("name", "factions_in_alliance")
+
+    def factions_in_alliance(self, obj):
+        """
+        Returns the __str__() of all the 'Factions' in an Alliance
+        """
+        return [faction for faction in obj.faction_set.all()]
 
 
-# TODO: I'll probably want to customize these admin pages later.
-raid_helper_models = [Champion, Rating]
-admin.site.register(raid_helper_models)
+class RatingInline(admin.TabularInline):
+    model = Rating
+
+
+@admin.register(Champion)
+class ChampionAdmin(admin.ModelAdmin):
+    # TODO: still probably needs more customizations
+    inlines = [
+        RatingInline
+    ]
