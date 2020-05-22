@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Q, F, Avg
 
-from decimal import Decimal, Context
+from decimal import Decimal
 
 # Create your models here.
 
