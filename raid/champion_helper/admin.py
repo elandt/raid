@@ -1,12 +1,12 @@
 from django.contrib import admin
 
-from .models import Affinity, Alliance, Champion, Faction, Rating
+from .models import Affinity, Alliance, Champion, Faction, Location, Rating
+
 # Register your models here.
 
 
 @admin.register(Affinity)
 class AffintyAdmin(admin.ModelAdmin):
-
     empty_value_display = "-empty-"
     list_display = ("name", "strength", "weakness")
 
@@ -20,9 +20,7 @@ class FactionInline(admin.TabularInline):
 class AllianceFactionAdmin(admin.ModelAdmin):
     # TODO: May still want to do more customizations...
     # but good enough for now
-    inlines = [
-        FactionInline
-    ]
+    inlines = [FactionInline]
     empty_value_display = "-empty-"
     list_display = ("name", "factions_in_alliance")
 
@@ -40,6 +38,20 @@ class RatingInline(admin.TabularInline):
 @admin.register(Champion)
 class ChampionAdmin(admin.ModelAdmin):
     # TODO: still probably needs more customizations
-    inlines = [
-        RatingInline
+    inlines = [RatingInline]
+    list_display = ["__str__", "avg_rating"]
+    fieldsets = [
+        (None, {"fields": ["name"]}),
+        (
+            "Attributes",
+            {
+                "fields": ("rarity", ("faction", "affinity"), "type"),
+                "classes": ["collapse"]
+            },
+        ),
     ]
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "type")

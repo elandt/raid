@@ -1,5 +1,7 @@
 from django.db import models
-from django.db.models import Q, F
+from django.db.models import Q, F, Avg
+
+from decimal import Decimal, Context
 
 # Create your models here.
 
@@ -57,7 +59,8 @@ class Faction(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["name", "alliance"], name="unique_faction_alliance_pair"
+                fields=["name", "alliance"],
+                name="unique_faction_alliance_pair"
             ),
         ]
 
@@ -76,8 +79,7 @@ class Affinity(models.Model):
         ("void", "Void"),
     )
     name = models.CharField(max_length=6, choices=AFFINITIES, unique=True)
-    # TODO: Why do I need null=True and blank=True??
-    # TODO: Look at docs - they probably has the answer
+    # See docs on [Field.null](https://docs.djangoproject.com/en/3.0/ref/models/fields/#null) to understand why null=True and blank=True are both needed
     strength = models.OneToOneField(
         "Affinity",
         on_delete=models.PROTECT,
@@ -112,7 +114,8 @@ class Affinity(models.Model):
                 name="strength_weakness_are_both_null_or_populated_and_diff",
             ),
             models.UniqueConstraint(
-                fields=["strength", "weakness"], name="unique_strength_weakness_pair"
+                fields=["strength", "weakness"],
+                name="unique_strength_weakness_pair"
             ),
         ]
 
@@ -141,33 +144,79 @@ class Champion(models.Model):
     )
     type = models.CharField(max_length=7, choices=TYPES)
 
+    def avg_rating(self):
+        """
+        Return the average of a Champion's Ratings rounded to 1 decimal place.
+        Have database calculate the average (returned as a
+        dictionary), grab the value of the calculated average
+        """
+        avg = self.rating_set.aggregate(Avg("value")).get("value__avg")
+        return avg.quantize(Decimal("1.0"))
+
     # Other possible fields: skills, num_owned, max power?
 
     def __str__(self):
         return self.name
 
 
-class Rating(models.Model):
+class Location(models.Model):
     """
-    Represents the ratings for a Champion
-    Ratings range from 0 - 5, with 1 decimal place
+    Represents an in-game location that can be fights occur
     """
 
-    champion = models.OneToOneField(Champion, on_delete=models.CASCADE)
-    campaign_locations = models.DecimalField(max_digits=2, decimal_places=1)
-    arena_offense = models.DecimalField(max_digits=2, decimal_places=1)
-    arena_defense = models.DecimalField(max_digits=2, decimal_places=1)
-    clan_boss = models.DecimalField(max_digits=2, decimal_places=1)
-    faction_wars = models.DecimalField(max_digits=2, decimal_places=1)
-    ice_golem = models.DecimalField(max_digits=2, decimal_places=1)
-    dragon = models.DecimalField(max_digits=2, decimal_places=1)
-    minotaur = models.DecimalField(max_digits=2, decimal_places=1)
-    fire_knight = models.DecimalField(max_digits=2, decimal_places=1)
-    spider = models.DecimalField(max_digits=2, decimal_places=1)
-    void_arcane = models.DecimalField(max_digits=2, decimal_places=1)
-    force = models.DecimalField(max_digits=2, decimal_places=1)
-    magic = models.DecimalField(max_digits=2, decimal_places=1)
-    spirit = models.DecimalField(max_digits=2, decimal_places=1)
+    name = models.CharField(max_length=50, unique=True)
+    TYPES = (
+        ("general", "General"),
+        ("dungeons", "Character Dungeons"),
+        ("keeps", "Affinity Keeps"),
+    )
+    type = models.CharField(max_length=8, choices=TYPES)
 
     def __str__(self):
-        return f"{self.champion.name}'s rating"
+        """
+        Modify self.name before displaying:
+        Capitalize the first letter of each word in self.name
+        Replace underscores in self.name with spaces
+        """
+        return " ".join((word.capitalize() for word in self.name.split("_")))
+
+    def save(self, *args, **kwargs):
+        """
+        Modify self.name before saving:
+        Make self.name lowercase
+        Replace spaces in self.name with underscores
+        """
+        if self.name:
+            self.name = self.name.lower()
+            self.name = self.name.replace(" ", "_")
+        super().save(*args, **kwargs)
+
+
+class Rating(models.Model):
+    """
+    Represents a rating for a Champion in a specific
+    in-game location.
+    Ratings range from 0 - 5, with 1 decimal place
+    """
+    # Generates all the values from 0.0 - 5.0, inclusive,
+    # stepping by 0.1
+    POSSIBLE_RATINGS = zip(
+        (Decimal(x)/10 for x in range(0, 51)), (x/10 for x in range(0, 51))
+    )
+
+    champion = models.ForeignKey(Champion, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    value = models.DecimalField(
+        max_digits=2, decimal_places=1, choices=POSSIBLE_RATINGS
+    )
+
+    def __str__(self):
+        return f"{self.champion}'s rating for {self.location}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["champion", "location"],
+                name="unique_champion_location_pair"
+            )
+        ]
