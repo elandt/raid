@@ -40,16 +40,7 @@ class ChampionAdmin(admin.ModelAdmin):
     # TODO: still probably needs more customizations
     inlines = [RatingInline]
     list_display = ["__str__", "avg_rating"]
-    fieldsets = [
-        (None, {"fields": ["name"]}),
-        (
-            "Attributes",
-            {
-                "fields": ("rarity", ("faction", "affinity"), "type"),
-                "classes": ["collapse"]
-            },
-        ),
-    ]
+    fields = ("name", ("rarity", "faction", "affinity", "type"))
 
 
 @admin.register(Location)
