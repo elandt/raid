@@ -2,16 +2,81 @@
 
 from django.db import migrations
 
+from settings import DATA_DIR
+import csv
+import os
+
+
+def get_key_by_value(dictionary, val):
+    """
+    Finds the key of a given value in the specified
+    dictionary.
+    """
+    for key, value in dictionary.items():
+        if val == value:
+            return key
+    raise ValueError(f"Value({val}) not found")
+
 
 def load_champions(apps, schema_editor):
     # TODO: Write logic to read data from file and write to DB
-    pass
+    Champions = apps.get_model("champion_helper", "Champion")
+    Ratings = apps.get_model("champion_helper", "Rating")
+    Factions = apps.get_model("champion_helper", "Faction")
+    Locations = apps.get_model("champion_helper", "Location")
+    Affinities = apps.get_model("champion_helper", "Affiinity")
+
+    AFFINITIES = dict(Affinities.AFFINITIES)
+    CHAMP_RARITIES = dict(Champions.RARITIES)
+    CHAMP_TYPES = dict(Champions.TYPES)
+    FACTIONS = dict(Factions.FACTIONS)
+    POSSIBLE_RATINGS = dict(Ratings.POSSIBLE_RATINGS)
+
+    data_file = os.path.join(DATA_DIR, "Raid_Shadow_Legends_Champions.csv")
+    with open(data_file, newline="") as initial_champs:
+        reader = csv.DictReader(initial_champs)
+        for row in reader:
+            champ_name = row["Champion"]
+            champ_type = row["Type"]  # uses choices
+            champ_faction = row["Faction"]
+            champ_rarity = row["Rarity"]  # uses choices
+            champ_affinity = row["Affinity"]
+            champ_rating_campaign = Decimal(row["Campaign"])
+            champ_rating_arena_offense = Decimal(row["Arena Offense"])
+            champ_rating_arena_defense = Decimal(row["Arena Defense"])
+            champ_rating_clan_boss = Decimal(row["Clan Boss"])
+            champ_rating_faction_wars = Decimal(row["Faction Wars"])
+            champ_rating_ice_golem = Decimal(row["Ice Golem"])
+            champ_rating_dragon = Decimal(row["Dragon"])
+            champ_rating_minotaur = Decimal(row["Minotaur"])
+            champ_rating_fire_knight = Decimal(row["Fire Knight"])
+            champ_rating_spider = Decimal(row["Spider"])
+            champ_rating_void_arcane = Decimal(row["Void_Arcane"])
+            champ_rating_void = Decimal(row["Void"])
+            champ_rating_force = Decimal(row["Force"])
+            champ_rating_magic = Decimal(row["Magic"])
+            champ_rating_spirit = Decimal(row["Spirit"])
+            new_champ = Champions.objects.get_or_create(
+                name=champ_name,
+                type=get_key_by_value(CHAMP_TYPES, champ_type),
+                affinity=Affinities.objects.get(
+                    name=get_key_by_value(AFFINITIES, champ_affinity)
+                ),
+                faction=Factions.objects.get(
+                    name=get_key_by_value(FACTIONS, champ_faction)
+                ),
+                rarity=get_key_by_value(
+                    CHAMP_RARITIES, champ_rarity
+                )
+            )
+            new_champ.save()
+            # TODO: figure out the logic for adding ratings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('champion_helper', '0001_initial'),
+        ("champion_helper", "0001_initial"),
     ]
 
     operations = [
