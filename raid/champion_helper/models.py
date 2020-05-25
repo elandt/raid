@@ -213,9 +213,18 @@ class Rating(models.Model):
     def __str__(self):
         return f"{self.champion}'s rating for {self.location}"
 
-    # TODO: Add check constraint on value to ensure 0 - 5 
     class Meta:
         constraints = [
+            models.CheckConstraint(
+                check=(
+                    Q(
+                        # TODO: Might need to use Decimal()
+                        value__gte=0.0,
+                        value__lte=5.0
+                    )
+                ),
+                name="zero_to_five_rating"
+            ),
             models.UniqueConstraint(
                 fields=["champion", "location"],
                 name="unique_champion_location_pair"
