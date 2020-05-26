@@ -9,6 +9,15 @@ from decimal import Decimal
 from raid.settings import DATA_DIR
 
 
+def location_as_str(location):
+    """
+    Modify location.name before displaying:
+    Capitalize the first letter of each word in self.name
+    Replace underscores in location.name with spaces
+    """
+    return " ".join((word.capitalize() for word in location.name.split("_")))
+
+
 def get_key_by_value(dictionary, val):
     """
     Finds the key of a given value in the specified
@@ -32,13 +41,47 @@ def load_champions(apps, schema_editor):
     Ratings = apps.get_model("champion_helper", "Rating")
     Factions = apps.get_model("champion_helper", "Faction")
     Locations = apps.get_model("champion_helper", "Location")
-    Affinities = apps.get_model("champion_helper", "Affiinity")
+    Affinities = apps.get_model("champion_helper", "Affinity")
 
-    AFFINITIES = dict(Affinities.AFFINITIES)
-    CHAMP_RARITIES = dict(Champions.RARITIES)
-    CHAMP_TYPES = dict(Champions.TYPES)
-    FACTIONS = dict(Factions.FACTIONS)
-    POSSIBLE_RATINGS = dict(Ratings.POSSIBLE_RATINGS)
+    # 
+    AFFINITIES = dict((
+        ("force", "Force"),
+        ("magic", "Magic"),
+        ("spirit", "Spirit"),
+        ("void", "Void"),
+    ))
+    CHAMP_RARITIES = dict((
+        ("c", "Common"),
+        ("unc", "Uncommon"),
+        ("rare", "Rare"),
+        ("epic", "Epic"),
+        ("legend", "Legendary"),
+    ))
+    CHAMP_TYPES = dict((
+        ("attack", "Attack"),
+        ("defense", "Defense"),
+        ("hp", "HP"),
+        ("support", "Support"),
+    ))
+    FACTIONS = dict((
+        ("banner_lords", "Banner Lords"),
+        ("high_elves", "High Elves"),
+        ("sacred_order", "The Sacred Order"),
+        ("barbarians", "Barbarians"),
+        ("ogryn_tribes", "Ogryn Tribes"),
+        ("lizardmen", "Lizardmen"),
+        ("skinwalkers", "Skinwalkers"),
+        ("orcs", "Orcs"),
+        ("demonspawn", "Demonspawn"),
+        ("undead_hordes", "Undead Hordes"),
+        ("dark_elves", "Dark Elves"),
+        ("knight_revenant", "Knight Revenant"),
+        ("dwarves", "Dwarves"),
+    ))
+    POSSIBLE_RATINGS = dict(zip(
+        (Decimal(x)/10 for x in range(0, 51)),
+        (Decimal(x)/10 for x in range(0, 51))
+    ))
 
     data_file = os.path.join(DATA_DIR, "Raid_Shadow_Legends_Champions.csv")
     with open(data_file, newline="") as initial_champs:
@@ -50,7 +93,7 @@ def load_champions(apps, schema_editor):
             champ_rarity = row["Rarity"]
             champ_affinity = row["Affinity"]
 
-            new_champ = Champions.objects.get_or_create(
+            new_champ, champ_created = Champions.objects.get_or_create(
                 name=champ_name,
                 type=get_key_by_value(CHAMP_TYPES, champ_type),
                 affinity=Affinities.objects.get(
@@ -69,8 +112,10 @@ def load_champions(apps, schema_editor):
             # the rating from the csv for the
             # champ being added
             for location in Locations.objects.all():
-                rating = Decimal(row[str(location)])
-                new_rating = Ratings.objects.get_or_create(
+                rating = Decimal(
+                    row[location_as_str(location)]
+                )
+                new_rating, rating_created = Ratings.objects.get_or_create(
                     champion=new_champ,
                     location=location,
                     value=get_key_by_value(
