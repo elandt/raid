@@ -2,9 +2,11 @@
 
 from django.db import migrations
 
-from settings import DATA_DIR
 import csv
 import os
+from decimal import Decimal
+
+from raid.settings import DATA_DIR
 
 
 def get_key_by_value(dictionary, val):
@@ -19,7 +21,9 @@ def get_key_by_value(dictionary, val):
 
 
 def load_champions(apps, schema_editor):
-    # TODO: Write logic to read data from file and write to DB
+    """
+    Iterates over the rows in the Rai
+    """
     Champions = apps.get_model("champion_helper", "Champion")
     Ratings = apps.get_model("champion_helper", "Rating")
     Factions = apps.get_model("champion_helper", "Faction")
@@ -37,25 +41,11 @@ def load_champions(apps, schema_editor):
         reader = csv.DictReader(initial_champs)
         for row in reader:
             champ_name = row["Champion"]
-            champ_type = row["Type"]  # uses choices
+            champ_type = row["Type"]
             champ_faction = row["Faction"]
-            champ_rarity = row["Rarity"]  # uses choices
+            champ_rarity = row["Rarity"]
             champ_affinity = row["Affinity"]
-            champ_rating_campaign = Decimal(row["Campaign"])
-            champ_rating_arena_offense = Decimal(row["Arena Offense"])
-            champ_rating_arena_defense = Decimal(row["Arena Defense"])
-            champ_rating_clan_boss = Decimal(row["Clan Boss"])
-            champ_rating_faction_wars = Decimal(row["Faction Wars"])
-            champ_rating_ice_golem = Decimal(row["Ice Golem"])
-            champ_rating_dragon = Decimal(row["Dragon"])
-            champ_rating_minotaur = Decimal(row["Minotaur"])
-            champ_rating_fire_knight = Decimal(row["Fire Knight"])
-            champ_rating_spider = Decimal(row["Spider"])
-            champ_rating_void_arcane = Decimal(row["Void_Arcane"])
-            champ_rating_void = Decimal(row["Void"])
-            champ_rating_force = Decimal(row["Force"])
-            champ_rating_magic = Decimal(row["Magic"])
-            champ_rating_spirit = Decimal(row["Spirit"])
+            
             new_champ = Champions.objects.get_or_create(
                 name=champ_name,
                 type=get_key_by_value(CHAMP_TYPES, champ_type),
@@ -70,7 +60,20 @@ def load_champions(apps, schema_editor):
                 )
             )
             new_champ.save()
-            # TODO: figure out the logic for adding ratings
+            new_champ.refresh_from_db()
+            # For each in-game location, add
+            # the rating from the csv for the
+            # champ being added
+            for location in Locations.objects.all():
+                rating = Decimal(row[str(location)])
+                new_rating = Ratings.objects.get_or_create(
+                    champion=new_champ,
+                    location=location,
+                    value=get_key_by_value(
+                        POSSIBLE_RATINGS, rating
+                    )
+                )
+                new_rating.save()
 
 
 class Migration(migrations.Migration):

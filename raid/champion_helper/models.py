@@ -201,7 +201,8 @@ class Rating(models.Model):
     # Generates all the values from 0.0 - 5.0, inclusive,
     # stepping by 0.1
     POSSIBLE_RATINGS = zip(
-        (Decimal(x)/10 for x in range(0, 51)), (x/10 for x in range(0, 51))
+        (Decimal(x)/10 for x in range(0, 51)),
+        (Decimal(x)/10 for x in range(0, 51))
     )
 
     champion = models.ForeignKey(Champion, on_delete=models.CASCADE)
