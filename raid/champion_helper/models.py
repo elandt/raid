@@ -153,7 +153,10 @@ class Champion(models.Model):
         avg = self.rating_set.aggregate(Avg("value")).get("value__avg")
         return avg.quantize(Decimal("1.0"))
 
-    # Other possible fields: skills, num_owned, max power?
+    # Other possible fields: skills
+    # TODO: If adding number owned, or max power,
+    # create new models to allow users to have
+    # their own set of champions
 
     def __str__(self):
         return self.name
