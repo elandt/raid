@@ -1,0 +1,40 @@
+{% extends "champion_helper/base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Champion Summary</h1>
+{% if champion_list %}
+<table>
+    <thead>
+        <th>Name</th>
+        <th>Faction</th>
+        <th>Alliance</th>
+        <th>Rarity</th>
+        <th>Affinity</th>
+        <th>Type</th>
+        <th>Average Rating</th>
+        <th>Ratings</th>
+    </thead>
+    <tbody>
+    {% for champion in champion_list %}
+        <tr>
+            <td>{{ champion }}</td>
+            <td>{{ champion.faction }}</td>
+            <td>{{ champion.faction.alliance }}</td>
+            <td>{{ champion.get_rarity_display }}</td>
+            <td>{{ champion.affinity }}</td>
+            <td>{{ champion.get_type_display }}</td>
+            <td>{{ champion.avg_rating }}</td>
+            <td>
+                {% for rating in champion.rating_set.all %}
+                    <li></li>{{ rating.location }} - {{ rating.value }} - {{ rating.location.get_type_display }}</li>
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No Champions are available.</p>
+{% endif %}
+{% endblock %}
