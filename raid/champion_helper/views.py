@@ -11,7 +11,7 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """
-
+        Returns all of the Champions ordered by their 'name'
         """
         order = "name"
 
