@@ -194,6 +194,9 @@ class Location(models.Model):
             self.name = self.name.replace(" ", "_")
         super().save(*args, **kwargs)
 
+    class Meta:
+        ordering = ["type", "name"]
+
 
 class Rating(models.Model):
     """
@@ -218,6 +221,7 @@ class Rating(models.Model):
         return f"{self.champion}'s rating for {self.location}"
 
     class Meta:
+        ordering = ["location"]
         constraints = [
             models.CheckConstraint(
                 check=(
