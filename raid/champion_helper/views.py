@@ -16,3 +16,8 @@ class IndexView(generic.ListView):
         order = "name"
 
         return Champion.objects.all().order_by(order)
+
+
+class ChampionListView(generic.ListView):
+    model = Champion
+    template_name = "champion_helper/champs.html"
