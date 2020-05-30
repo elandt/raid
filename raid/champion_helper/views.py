@@ -1,8 +1,10 @@
 from django.shortcuts import render
 
 from django.views import generic
+from django_tables2 import SingleTableView
 
 from .models import Champion
+from .tables import ChampionTable
 
 
 # Create your views here.
@@ -18,6 +20,7 @@ class IndexView(generic.ListView):
         return Champion.objects.all().order_by(order)
 
 
-class ChampionListView(generic.ListView):
+class ChampionListView(SingleTableView):
     model = Champion
+    table_class = ChampionTable
     template_name = "champion_helper/champs.html"
