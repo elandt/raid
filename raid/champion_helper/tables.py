@@ -1,9 +1,21 @@
 import django_tables2 as tables
+
 from .models import Champion
 
 
 class ChampionTable(tables.Table):
     ratings = tables.Column(accessor=tables.A("rating_set.all"))
+
+    def render_ratings(self, value):
+        # This displays the location, 
+        # value, and location type for a rating,
+        # but as a list of strings...
+        # TODO: figure out how to get this
+        # to display better
+        return [
+            f"{rating.location} - {rating.value} - {rating.location.type}"
+            for rating in value
+        ]
 
     class Meta:
         model = Champion
@@ -15,6 +27,6 @@ class ChampionTable(tables.Table):
             "rarity",
             "affinity",
             "type",
-            "avg_rating"
+            "avg_rating",
         )
         attrs = {"class": "table table-striped table-dark"}
