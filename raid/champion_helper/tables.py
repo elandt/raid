@@ -7,7 +7,7 @@ class ChampionTable(tables.Table):
     ratings = tables.Column(accessor=tables.A("rating_set.all"))
 
     def render_ratings(self, value):
-        # This displays the location, 
+        # This displays the location,
         # value, and location type for a rating,
         # but as a list of strings...
         # TODO: figure out how to get this
@@ -16,6 +16,9 @@ class ChampionTable(tables.Table):
             f"{rating.location} - {rating.value} - {rating.location.type}"
             for rating in value
         ]
+    
+    # TODO: add custom ordering for avg_rating,
+    # or disable ordering on that column
 
     class Meta:
         model = Champion
