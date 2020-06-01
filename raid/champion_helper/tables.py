@@ -19,6 +19,7 @@ class ChampionTable(tables.Table):
     
     # TODO: add custom ordering for avg_rating,
     # or disable ordering on that column
+    # https://stackoverflow.com/questions/12614779/django-calculate-average-and-sort-by-field-in-submodel
 
     class Meta:
         model = Champion
