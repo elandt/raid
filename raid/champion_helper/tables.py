@@ -1,4 +1,7 @@
 import django_tables2 as tables
+from django.db.models import Avg
+
+from decimal import Decimal
 
 from .models import Champion
 
@@ -16,10 +19,29 @@ class ChampionTable(tables.Table):
             f"{rating.location} - {rating.value} - {rating.location.type}"
             for rating in value
         ]
-    
-    # TODO: add custom ordering for avg_rating,
-    # or disable ordering on that column
-    # https://stackoverflow.com/questions/12614779/django-calculate-average-and-sort-by-field-in-submodel
+
+    def render_avg_rating(self, value):
+        """
+        Rounds the display of the Average Rating to 1 decimal place.
+        """
+        return Decimal(value).quantize(Decimal("1.0"))
+
+    # Relevant documentation/resources:
+    # Django's annotate() - https://docs.djangoproject.com/en/3.0/ref/models/querysets/#annotate
+    # Django-tables2 custom ordering - https://django-tables2.readthedocs.io/en/latest/pages/ordering.html#table-order-foo-methods
+    # Stack Overflow questions -
+    # https://stackoverflow.com/q/12614779/3570769
+    # https://stackoverflow.com/q/48397761/3570769
+    def order_avg_rating(self, queryset, is_descending):
+        """
+        Enables the Average Rating table column to be sortable.
+        """
+        queryset = queryset.annotate(
+            avg_rating=Avg("rating__value")
+        ).order_by(
+            ("-" if is_descending else "") + "avg_rating"
+        )
+        return (queryset, True)
 
     class Meta:
         model = Champion
