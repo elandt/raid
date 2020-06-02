@@ -8,6 +8,7 @@ from .models import Champion
 
 class ChampionTable(tables.Table):
     avg_rating = tables.Column(verbose_name="Average Rating")
+    # TODO: Try using a TemplateColumn to achieve the desired rendering
     ratings = tables.Column(accessor=tables.A("rating_set.all"))
 
     def render_ratings(self, value):
