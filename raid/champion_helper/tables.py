@@ -7,6 +7,7 @@ from .models import Champion
 
 
 class ChampionTable(tables.Table):
+    avg_rating = tables.Column(verbose_name="Average Rating")
     ratings = tables.Column(accessor=tables.A("rating_set.all"))
 
     def render_ratings(self, value):
@@ -14,7 +15,7 @@ class ChampionTable(tables.Table):
         # value, and location type for a rating,
         # but as a list of strings...
         # TODO: figure out how to get this
-        # to display better
+        # to display better...without the []
         return [
             f"{rating.location} - {rating.value} - {rating.location.type}"
             for rating in value
@@ -28,13 +29,16 @@ class ChampionTable(tables.Table):
 
     # Relevant documentation/resources:
     # Django's annotate() - https://docs.djangoproject.com/en/3.0/ref/models/querysets/#annotate
+    # Django's Avg - https://docs.djangoproject.com/en/3.0/ref/models/querysets/#avg
     # Django-tables2 custom ordering - https://django-tables2.readthedocs.io/en/latest/pages/ordering.html#table-order-foo-methods
     # Stack Overflow questions -
     # https://stackoverflow.com/q/12614779/3570769
     # https://stackoverflow.com/q/48397761/3570769
     def order_avg_rating(self, queryset, is_descending):
         """
-        Enables the Average Rating table column to be sortable.
+        Enables the Average Rating table column to
+        be sortable. The average is returned, and
+        sorted as a float.
         """
         queryset = queryset.annotate(
             avg_rating=Avg("rating__value")
