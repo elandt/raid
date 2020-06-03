@@ -1,45 +1,13 @@
 {% extends "champion_helper/base.html" %}
 {% load static %}
+{% load render_table from django_tables2 %}
 
 {% block content %}
     <div class="container-fluid">
         <h1 class="display-1 text-center">Champion Summary</h1>
         {% if champion_list %}
         <div class="col">
-            <table class="table table-striped table-dark">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Faction</th>
-                        <th>Alliance</th>
-                        <th>Rarity</th>
-                        <th>Affinity</th>
-                        <th>Type</th>
-                        <th>Average Rating</th>
-                        <th>Ratings</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for champion in champion_list %}
-                    <tr>
-                        <td>{{ champion }}</td>
-                        <td>{{ champion.faction }}</td>
-                        <td>{{ champion.faction.alliance }}</td>
-                        <td>{{ champion.get_rarity_display }}</td>
-                        <td>{{ champion.affinity }}</td>
-                        <td>{{ champion.get_type_display }}</td>
-                        <td>{{ champion.avg_rating }}</td>
-                        <td>
-                            <ul class="list-inline">
-                                {% for rating in champion.rating_set.all %}
-                                    <li class="list-inline-item">{{ rating.location }} - {{ rating.value }} - {{ rating.location.get_type_display }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {% render_table table %}
         </div>
         {% else %}
         <p>No Champions are available.</p>
