@@ -8,19 +8,20 @@ from .models import Champion
 
 class ChampionTable(tables.Table):
     avg_rating = tables.Column(verbose_name="Average Rating")
-    # TODO: Try using a TemplateColumn to achieve the desired rendering
-    ratings = tables.Column(accessor=tables.A("rating_set.all"))
-
-    def render_ratings(self, value):
-        # This displays the location,
-        # value, and location type for a rating,
-        # but as a list of strings...
-        # TODO: figure out how to get this
-        # to display better...without the []
-        return [
-            f"{rating.location} - {rating.value} - {rating.location.type}"
-            for rating in value
-        ]
+    # TODO: Probably want to change this to use a
+    # template, rather than hardcoding the
+    # template_code inline here...
+    # TODO: Determine if there's a sensible way to
+    # sort this column, or is disabling sorting the
+    # best option?
+    ratings = tables.TemplateColumn(
+        template_code="""<ul class='list-inline'>
+            {% for rating in record.rating_set.all %}
+                <li class='list-inline-item'>{{ rating.location }} - {{ rating.value }} - {{ rating.location.get_type_display }}</li>
+            {% endfor %}
+        </ul>""",
+        orderable=False,
+    )
 
     def render_avg_rating(self, value):
         """
@@ -41,9 +42,7 @@ class ChampionTable(tables.Table):
         be sortable. The average is returned, and
         sorted as a float.
         """
-        queryset = queryset.annotate(
-            avg_rating=Avg("rating__value")
-        ).order_by(
+        queryset = queryset.annotate(avg_rating=Avg("rating__value")).order_by(
             ("-" if is_descending else "") + "avg_rating"
         )
         return (queryset, True)
