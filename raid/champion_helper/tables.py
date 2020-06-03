@@ -8,18 +8,11 @@ from .models import Champion
 
 class ChampionTable(tables.Table):
     avg_rating = tables.Column(verbose_name="Average Rating")
-    # TODO: Probably want to change this to use a
-    # template, rather than hardcoding the
-    # template_code inline here...
     # TODO: Determine if there's a sensible way to
     # sort this column, or is disabling sorting the
     # best option?
     ratings = tables.TemplateColumn(
-        template_code="""<ul class='list-inline'>
-            {% for rating in record.rating_set.all %}
-                <li class='list-inline-item'>{{ rating.location }} - {{ rating.value }} - {{ rating.location.get_type_display }}</li>
-            {% endfor %}
-        </ul>""",
+        template_name="champion_helper/rating_list.html",
         orderable=False,
     )
 

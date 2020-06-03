@@ -1,0 +1,6 @@
+<ul class='list-inline'>
+    {% for rating in record.rating_set.all %}
+    <li class='list-inline-item'>{{ rating.location }} - {{ rating.value }} - {{ rating.location.get_type_display }}
+    </li>
+    {% endfor %}
+</ul>
