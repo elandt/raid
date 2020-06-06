@@ -9,6 +9,21 @@ from decimal import Decimal
 # and how to limit the relationship between
 # factions and allicances
 
+RARITIES = (
+        ("c", "Common"),
+        ("unc", "Uncommon"),
+        ("rare", "Rare"),
+        ("epic", "Epic"),
+        ("legend", "Legendary"),
+    )
+
+TYPES = (
+        ("attack", "Attack"),
+        ("defense", "Defense"),
+        ("hp", "HP"),
+        ("support", "Support"),
+    )
+
 
 class Alliance(models.Model):
     """
@@ -126,22 +141,9 @@ class Champion(models.Model):
     """
 
     name = models.CharField(max_length=100, unique=True)
-    RARITIES = (
-        ("c", "Common"),
-        ("unc", "Uncommon"),
-        ("rare", "Rare"),
-        ("epic", "Epic"),
-        ("legend", "Legendary"),
-    )
     rarity = models.CharField(max_length=6, choices=RARITIES)
     faction = models.ForeignKey(Faction, on_delete=models.PROTECT)
     affinity = models.ForeignKey(Affinity, on_delete=models.PROTECT)
-    TYPES = (
-        ("attack", "Attack"),
-        ("defense", "Defense"),
-        ("hp", "HP"),
-        ("support", "Support"),
-    )
     type = models.CharField(max_length=7, choices=TYPES)
 
     def avg_rating(self):

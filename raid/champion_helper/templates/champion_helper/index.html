@@ -7,6 +7,11 @@
         <h1 class="display-1 text-center">Champion Summary</h1>
         {% if champion_list %}
         <div class="col">
+            <!-- TODO: figure out how to actually include the filter in the table... -->
+            <form method="get" class="form form-inline">
+                {{ filter.form.as_p }}
+                <input class="btn" type="submit" />
+            </form>
             {% render_table table %}
         </div>
         {% else %}
