@@ -1,6 +1,6 @@
-from django_filters import CharFilter, ChoiceFilter, FilterSet, ModelChoiceFilter
+from django_filters import CharFilter, FilterSet, ModelChoiceFilter
 
-from .models import Affinity, Alliance, Champion, Faction, RARITIES, TYPES
+from .models import Alliance, Champion
 
 
 class ChampionFilter(FilterSet):
