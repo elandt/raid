@@ -4,14 +4,18 @@
 
 {% block content %}
     <div class="container-fluid">
-        <h1 class="display-1 text-center">Champion Summary</h1>
+        <div class="page-header">
+            <h1 class="display-1 text-center">Champion Summary</h1>
+        </div>
         {% if champion_list %}
         <div class="col">
-            <!-- TODO: figure out how to actually include the filter in the table... -->
-            <form method="get" class="form form-inline">
-                {{ filter.form.as_p }}
-                <input class="btn" type="submit" />
-            </form>
+            <!-- TODO: figure out how to actually include the filter in the table...may nee a custom form template to pass to the filter instead of trying to control it here...-->
+            <nav class="navbar navbar-dark bg-dark">
+                <form method="get" class="form form-dark bg-dark form-inline">
+                    {{ filter.form.as_p }}
+                    <input class="btn btn-light" type="submit" />
+                </form>
+            </nav>
             {% render_table table %}
         </div>
         {% else %}
