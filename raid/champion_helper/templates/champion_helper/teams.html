@@ -1,0 +1,19 @@
+{% extends "champion_helper/base.html" %}
+{% load static %}
+{% load django_tables2 %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1 class="display-1 text-center">Team Suggestions</h1>
+        </div>
+        {% if champion_list %}
+            {% for table in tables %}
+                <!-- <h5>{{ table.title }}</h5> -->
+                {% render_table table %}
+            {% endfor %}
+        {% else %}
+            <p>No Champions are available.</p>
+        {% endif %}
+    </div>
+{% endblock %}
