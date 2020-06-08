@@ -228,7 +228,6 @@ class Rating(models.Model):
             models.CheckConstraint(
                 check=(
                     Q(
-                        # TODO: Might need to use Decimal()
                         value__gte=0.0,
                         value__lte=5.0
                     )
