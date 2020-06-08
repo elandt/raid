@@ -11,4 +11,11 @@ class ChampionFilter(FilterSet):
 
     class Meta:
         model = Champion
-        fields = ["name", "faction", "faction__alliance", "rarity", "affinity", "type"]
+        fields = [
+            "name",
+            "faction",
+            "faction__alliance",
+            "rarity",
+            "affinity",
+            "type"
+        ]
