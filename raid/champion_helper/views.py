@@ -26,6 +26,9 @@ class TeamSuggestionView(MultiTableMixin, FilterView):
     tables = [
         # Using attrs overrides any attrs defined in the table Meta class.
         # TODO: figure out how to dynamically set the table title?
+        # TODO: Either need dynamic filtering of tables, or different tables
+        # dynamic filtering can probably be achieved through a form,
+        # and querysets?
         ChampionTable(qs, attrs={"title": "Overall Best"}),
         ChampionTable(qs, attrs={"title": "Best Force Team"}),
         ChampionTable(qs, attrs={"title": "Best Magic Team"}),
