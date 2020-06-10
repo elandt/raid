@@ -8,6 +8,12 @@
             <h1 class="display-1 text-center">Team Suggestions</h1>
         </div>
         {% if rating_list %}
+            <nav class="navbar navbar-dark bg-dark">
+                <form method="get" class="form form-dark bg-dark form-inline">
+                    {{ filter.form.as_p }}
+                    <input class="btn btn-light" type="submit" />
+                </form>
+            </nav>
             {% for table in tables %}
                 <!-- <h5>{{ table.title }}</h5> -->
                 {% render_table table %}
