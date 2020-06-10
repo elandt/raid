@@ -3,7 +3,7 @@ from django.db.models import Avg
 
 from decimal import Decimal
 
-from .models import Champion
+from .models import Champion, Rating
 
 
 class ChampionTable(tables.Table):
@@ -51,5 +51,22 @@ class ChampionTable(tables.Table):
             "affinity",
             "type",
             "avg_rating",
+        )
+        attrs = {"class": "table table-striped table-dark"}
+
+
+class RatingTable(tables.Table):
+    class Meta:
+        model = Rating
+        template_name = "django_tables2/bootstrap4.html"
+        fields = (
+            "champion.name",
+            "champion.faction",
+            "champion.faction.alliance",
+            "champion.rarity",
+            "champion.affinity",
+            "champion.type",
+            "location",
+            "value",
         )
         attrs = {"class": "table table-striped table-dark"}

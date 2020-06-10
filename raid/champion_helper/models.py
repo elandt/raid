@@ -223,7 +223,7 @@ class Rating(models.Model):
         return f"{self.champion}'s rating for {self.location}"
 
     class Meta:
-        ordering = ["location"]
+        ordering = ["location", "-value"]
         constraints = [
             models.CheckConstraint(
                 check=(
