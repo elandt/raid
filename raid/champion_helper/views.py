@@ -1,4 +1,4 @@
-from django_tables2.views import SingleTableMixin, MultiTableMixin
+from django_tables2.views import SingleTableMixin, SingleTableView, MultiTableMixin
 from django_filters.views import FilterView
 
 from .models import Champion, Rating
@@ -14,6 +14,7 @@ class IndexView(SingleTableMixin, FilterView):
 
     filterset_class = ChampionFilter
 
+
 # TODO: probably don't need FilterView here because it
 # would be a form for all of the tables
 
@@ -24,22 +25,26 @@ class TeamSuggestionView(MultiTableMixin, FilterView):
     """
 
     model = Rating
+
+    # TODO: Filter displays, but does nothing...need to figure out why, and how to fix it.
+    filterset_class = RatingFilter
+    
     # TODO: Figure out what this should actually be. Need to apply
     # sanitized input from a form
-    ratings_by_location = Rating.objects.filter(location__name="dragon")
-    best_overall_team = ratings_by_location  #[:5]
+    ratings_by_location = Rating.objects.all()
+    best_overall_team = ratings_by_location  # [:5]
     best_force_team = ratings_by_location.filter(
         champion__affinity__name="force"
-    )  #[:5]
+    )  # [:5]
     best_magic_team = ratings_by_location.filter(
         champion__affinity__name="magic"
-    )  #[:5]
+    )  # [:5]
     best_spirit_team = ratings_by_location.filter(
         champion__affinity__name="spirit"
-    )  #[:5]
+    )  # [:5]
     best_void_team = ratings_by_location.filter(
-        champion__affinity__name="void"
-    )  #[:5]
+        champion__affinity__name="void",
+    )  # [:5]
 
     tables = [
         # Using attrs overrides any attrs defined in the table Meta class.
@@ -56,7 +61,20 @@ class TeamSuggestionView(MultiTableMixin, FilterView):
     ]
     template_name = "champion_helper/teams.html"
 
-    # TODO: Filter displays, but does nothing...need to figure out why, and how to fix it.
-    filterset_class = RatingFilter
-
     table_pagination = {"per_page": 5}
+
+
+class GenericFilteredTableView(SingleTableView):
+    filter_class = None
+
+    def get_table_data(self):
+        self.filter = self.filter_class(
+            self.request.GET,
+            queryset=super(GenericFilteredTableView, self).get_table_data(),
+        )
+        return self.filter.qs
+
+    def get_context_data(self, **kwargs):
+        context = super(GenericFilteredTableView, self).get_context_data(**kwargs)
+        context["filter"] = self.filter
+        return context
