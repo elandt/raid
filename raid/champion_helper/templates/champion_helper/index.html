@@ -5,21 +5,20 @@
 {% block content %}
     <div class="container-fluid">
         <div class="page-header">
+            <!-- TODO: Make this injectable so I can change it based on which sub template I'm using -->
             <h1 class="display-1 text-center">Champion Summary</h1>
         </div>
-        {% if champion_list %}
+        <!-- TODO: figure out how to actually include the filter in the table...may need a custom form template to pass to the filter instead of trying to control it here...-->
         <div class="col">
-            <!-- TODO: figure out how to actually include the filter in the table...may nee a custom form template to pass to the filter instead of trying to control it here...-->
-            <nav class="navbar navbar-dark bg-dark">
-                <form method="get" class="form form-dark bg-dark form-inline">
-                    {{ filter.form.as_p }}
-                    <input class="btn btn-light" type="submit" />
-                </form>
-            </nav>
-            {% render_table table %}
+            <form method="get" class="form form-dark form-inline">
+                {{ filter.form.as_p }}
+                <input class="btn btn-light" type="submit" />
+            </form>
+            {% if object_list %}
+                {% render_table table %}
+            {% else %}
+                <p>No Champions are available.</p>
+            {% endif %}
         </div>
-        {% else %}
-        <p>No Champions are available.</p>
-        {% endif %}
     </div>
 {% endblock %}
