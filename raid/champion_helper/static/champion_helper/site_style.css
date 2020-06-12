@@ -1,3 +1,9 @@
 body {
     color: black;
 }
+
+.tableFixHead          { overflow-y: auto; height: 100px; }
+.tableFixHead thead th { position: sticky; top: 0; }
+
+th, td { padding: 8px 16px; }
+th     { background:#eee; }

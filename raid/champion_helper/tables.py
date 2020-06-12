@@ -52,7 +52,7 @@ class ChampionTable(tables.Table):
             "type",
             "avg_rating",
         )
-        attrs = {"class": "table table-striped table-dark"}
+        attrs = {"class": "table table-striped table-dark tableFixHead"}
 
 
 class RatingTable(tables.Table):
@@ -69,4 +69,4 @@ class RatingTable(tables.Table):
             "location",
             "value",
         )
-        attrs = {"class": "table table-striped table-dark"}
+        attrs = {"class": "table table-striped table-dark tableFixHead"}
