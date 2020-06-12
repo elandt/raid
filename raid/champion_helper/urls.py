@@ -13,5 +13,11 @@ urlpatterns = [
         filter_class=filters.ChampionFilter,
     ), name='index'),
     # path("", views.IndexView.as_view(), name="index"),
-    path("teams", views.TeamSuggestionView.as_view(), name="teams"),
+    path("teamses", views.TeamSuggestionView.as_view(), name="teamses"),
+    path("teams", views.GenericFilteredTableView.as_view(
+        model=models.Rating,
+        table_class=tables.RatingTable,
+        template_name='champion_helper/index.html',
+        filter_class=filters.RatingFilter,
+    ), name='teams'),
 ]
