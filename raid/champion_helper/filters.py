@@ -28,11 +28,14 @@ class RatingFilter(FilterSet):
     champion__faction__alliance = ModelChoiceFilter(
         label="Alliance", queryset=Alliance.objects.all(),
     )
-    champion__affinity = ModelChoiceFilter(
-        label="Affinity", queryset=Affinity.objects.all()
-    )
+    # champion__affinity = ModelChoiceFilter(
+    #     label="Affinity", queryset=Affinity.objects.all()
+    # )
     champion__rarity = ChoiceFilter(
         label="Rarity", choices=RARITIES,
+    )
+    location = ModelChoiceFilter(
+        label="Location", queryset=Location.objects.all()
     )
 
     class Meta:
@@ -41,6 +44,18 @@ class RatingFilter(FilterSet):
             "champion__faction",
             "champion__faction__alliance",
             "champion__rarity",
-            "champion__affinity",
+            # "champion__affinity",
             "location"
+        ]
+
+
+class RatingFilterWithAffinity(RatingFilter):
+    champion__affinity = ModelChoiceFilter(
+        label="Affinity", queryset=Affinity.objects.all()
+    )
+
+    class Meta:
+        model = Rating
+        fields = [
+            "champion__affinity"
         ]

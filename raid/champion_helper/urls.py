@@ -18,6 +18,6 @@ urlpatterns = [
         model=models.Rating,
         table_class=tables.RatingTable,
         template_name='champion_helper/index.html',
-        filter_class=filters.RatingFilter,
+        filter_class=filters.RatingFilterWithAffinity,
     ), name='teams'),
 ]
