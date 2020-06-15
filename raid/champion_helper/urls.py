@@ -17,7 +17,7 @@ urlpatterns = [
     path("teams", views.GenericFilteredTableView.as_view(
         model=models.Rating,
         table_class=tables.RatingTable,
-        template_name='champion_helper/index.html',
+        template_name='champion_helper/filter.html',
         filter_class=filters.RatingFilterWithAffinity,
     ), name='teams'),
 ]
