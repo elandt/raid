@@ -1,0 +1,37 @@
+{% extends "champion_helper/index.html" %}
+{% load static %}
+
+{% block form %}
+    <form method="get">
+        <div class="well">
+            <h4>Filter</h4>
+            <div class="row">
+                <div class="form-group col-sm-3 col-md-2">
+                  {{ filter.form.name.label_tag }}
+                  {{ filter.form.name }}
+                </div>
+                <div class="form-group col-sm-4 col-md-2">
+                  {{ filter.form.faction.label_tag }}
+                  {{ filter.form.faction }}
+                </div>
+                <div class="form-group col-sm-4 col-md-2">
+                  {{ filter.form.faction__alliance.label_tag }}
+                  {{ filter.form.faction__alliance }}
+                </div>
+                <div class="form-group col-sm-4 col-md-2">
+                  {{ filter.form.rarity.label_tag }}
+                  {{ filter.form.rarity }}
+                </div>
+                <div class="form-group col-sm-4 col-md-2">
+                  {{ filter.form.affinity.label_tag }}
+                  {{ filter.form.affinity }}
+                </div>
+                <div class="form-group col-sm-4 col-md-1">
+                  {{ filter.form.type.label_tag }}
+                  {{ filter.form.type }}
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+{% endblock %}
