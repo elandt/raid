@@ -1,0 +1,14 @@
+{% extends "champion_helper/index.html" %}
+{% load static %}
+
+{% block form %}
+    <form method="get" class="form form-inline">
+        <div class="well">
+            <h4>Filter</h4>
+            <div class="row">
+                {{ filter.form.as_p }}
+            </div>
+            <input class="btn btn-primary" type="submit" />
+        </div>
+    </form>
+{% endblock %}

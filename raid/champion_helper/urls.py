@@ -9,7 +9,7 @@ urlpatterns = [
     path("", views.GenericFilteredTableView.as_view(
         model=models.Champion,
         table_class=tables.ChampionTable,
-        template_name='champion_helper/index.html',
+        template_name='champion_helper/filter.html',
         filter_class=filters.ChampionFilter,
     ), name='index'),
     # path("", views.IndexView.as_view(), name="index"),

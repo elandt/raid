@@ -26,9 +26,10 @@ class TeamSuggestionView(MultiTableMixin, FilterView):
 
     model = Rating
 
-    # TODO: Filter displays, but does nothing...need to figure out why, and how to fix it.
+    # TODO: Filter displays, but does nothing...need to figure out
+    # why, and how to fix it.
     filterset_class = RatingFilter
-    
+
     # TODO: Figure out what this should actually be. Need to apply
     # sanitized input from a form
     ratings_by_location = Rating.objects.all()
@@ -75,6 +76,9 @@ class GenericFilteredTableView(SingleTableView):
         return self.filter.qs
 
     def get_context_data(self, **kwargs):
-        context = super(GenericFilteredTableView, self).get_context_data(**kwargs)
+        context = super(
+            GenericFilteredTableView,
+            self
+        ).get_context_data(**kwargs)
         context["filter"] = self.filter
         return context

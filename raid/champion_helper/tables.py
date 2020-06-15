@@ -23,9 +23,12 @@ class ChampionTable(tables.Table):
         return Decimal(value).quantize(Decimal("1.0"))
 
     # Relevant documentation/resources:
-    # Django's annotate() - https://docs.djangoproject.com/en/3.0/ref/models/querysets/#annotate
-    # Django's Avg - https://docs.djangoproject.com/en/3.0/ref/models/querysets/#avg
-    # Django-tables2 custom ordering - https://django-tables2.readthedocs.io/en/latest/pages/ordering.html#table-order-foo-methods
+    # Django's annotate() -
+    # https://docs.djangoproject.com/en/3.0/ref/models/querysets/#annotate
+    # Django's Avg -
+    # https://docs.djangoproject.com/en/3.0/ref/models/querysets/#avg
+    # Django-tables2 custom ordering -
+    # https://django-tables2.readthedocs.io/en/latest/pages/ordering.html#table-order-foo-methods
     # Stack Overflow questions -
     # https://stackoverflow.com/q/12614779/3570769
     # https://stackoverflow.com/q/48397761/3570769

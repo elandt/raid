@@ -94,7 +94,9 @@ class Affinity(models.Model):
         ("void", "Void"),
     )
     name = models.CharField(max_length=6, choices=AFFINITIES, unique=True)
-    # See docs on [Field.null](https://docs.djangoproject.com/en/3.0/ref/models/fields/#null) to understand why null=True and blank=True are both needed
+    # See docs on [Field.null]
+    # (https://docs.djangoproject.com/en/3.0/ref/models/fields/#null)
+    # to understand why null=True and blank=True are both needed
     strength = models.OneToOneField(
         "Affinity",
         on_delete=models.PROTECT,

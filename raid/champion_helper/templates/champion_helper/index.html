@@ -10,10 +10,8 @@
         </div>
         <!-- TODO: figure out how to actually include the filter in the table...may need a custom form template to pass to the filter instead of trying to control it here...-->
         <div class="col">
-            <form method="get" class="form form-dark form-inline">
-                {{ filter.form.as_p }}
-                <input class="btn btn-light" type="submit" />
-            </form>
+            {% block form %}
+            {% endblock %}
             {% if object_list %}
                 {% render_table table %}
             {% else %}
