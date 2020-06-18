@@ -5,8 +5,9 @@
 {% block content %}
     <div class="container-fluid">
         <div class="page-header">
-            <!-- TODO: Make this injectable so I can change it based on which sub template I'm using -->
-            <h1 class="display-1 text-center">Champion Summary</h1>
+            <!-- TODO: Make this injectable so I can change it based on which sub template I'm using...could this be a context variable? -->
+            {% block header %}
+            {% endblock %}
         </div>
         <!-- TODO: figure out how to actually include the filter in the table...may need a custom form template to pass to the filter instead of trying to control it here...-->
         <div class="col">
@@ -23,7 +24,7 @@
             {% if object_list %}
                 {% render_table table %}
             {% else %}
-                <p>No Champions are available.</p>
+                <p>No items are available.</p>
             {% endif %}
         </div>
     </div>

@@ -1,6 +1,10 @@
 {% extends "champion_helper/index.html" %}
 {% load static %}
 
+{% block header %}
+  <h1 class="display-1 text-center">Champion Summary</h1>
+{% endblock %}
+
 {% block form %}
   <div class="form-group col-sm-3 col-md-2">
     {{ filter.form.name.label_tag }}
