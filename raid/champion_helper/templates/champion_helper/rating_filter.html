@@ -2,14 +2,10 @@
 {% load static %}
 
 {% block header %}
-  <h1 class="display-1 text-center">Team Sugeestions</h1>
+  <h1 class="display-1 text-center">Team Suggestions</h1>
 {% endblock %}
 
 {% block form %}
-  <div class="form-group col-sm-3 col-md-1">
-    {{ filter.form.champion__affinity.label_tag }}
-    {{ filter.form.champion__affinity }}
-  </div>
   <div class="form-group col-sm-4 col-md-1">
     {{ filter.form.champion__faction.label_tag }}
     {{ filter.form.champion__faction }}
@@ -21,5 +17,9 @@
   <div class="form-group col-sm-4 col-md-1">
     {{ filter.form.champion__rarity.label_tag }}
     {{ filter.form.champion__rarity }}
+  </div>
+  <div class="form-group col-sm-3 col-md-1">
+    {{ filter.form.location.label_tag }}
+    {{ filter.form.location }}
   </div>
 {% endblock %}
