@@ -33,19 +33,19 @@ class TeamSuggestionView(MultiTableMixin, FilterView):
     # TODO: Figure out what this should actually be. Need to apply
     # sanitized input from a form
     ratings_by_location = Rating.objects.all()
-    best_overall_team = ratings_by_location  # [:5]
+    best_overall_team = ratings_by_location
     best_force_team = ratings_by_location.filter(
         champion__affinity__name="force"
-    )  # [:5]
+    )
     best_magic_team = ratings_by_location.filter(
         champion__affinity__name="magic"
-    )  # [:5]
+    )
     best_spirit_team = ratings_by_location.filter(
         champion__affinity__name="spirit"
-    )  # [:5]
+    )
     best_void_team = ratings_by_location.filter(
         champion__affinity__name="void",
-    )  # [:5]
+    )
 
     tables = [
         # Using attrs overrides any attrs defined in the table Meta class.
