@@ -1,25 +1,26 @@
 {% extends "champion_helper/index.html" %}
 {% load static %}
+{% load render_field from widget_tweaks %}
 
 {% block header %}
   <h1 class="display-1 text-center">Team Suggestions</h1>
 {% endblock %}
 
 {% block form %}
-  <div class="form-group col-sm-4 col-md-1">
+  <div class="form-group col-sm-4 col-md-3">
     {{ filter.form.champion__faction.label_tag }}
-    {{ filter.form.champion__faction }}
+    {% render_field filter.form.champion__faction class="form-control" %}
   </div>
-  <div class="form-group col-sm-4 col-md-1">
+  <div class="form-group col-sm-4 col-md-3">
     {{ filter.form.champion__faction__alliance.label_tag }}
-    {{ filter.form.champion__faction__alliance }}
+    {% render_field filter.form.champion__faction__alliance class="form-control" %}
   </div>
-  <div class="form-group col-sm-4 col-md-1">
+  <div class="form-group col-sm-4 col-md-3">
     {{ filter.form.champion__rarity.label_tag }}
-    {{ filter.form.champion__rarity }}
+    {% render_field filter.form.champion__rarity class="form-control" %}
   </div>
-  <div class="form-group col-sm-3 col-md-1">
+  <div class="form-group col-sm-3 col-md-3">
     {{ filter.form.location.label_tag }}
-    {{ filter.form.location }}
+    {% render_field filter.form.location class="form-control" %}
   </div>
 {% endblock %}

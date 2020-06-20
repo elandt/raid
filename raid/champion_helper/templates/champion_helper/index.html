@@ -9,16 +9,15 @@
             {% block header %}
             {% endblock %}
         </div>
-        <!-- TODO: figure out how to actually include the filter in the table...may need a custom form template to pass to the filter instead of trying to control it here...-->
         <div class="col">
-            <form method="get" class="mb-2">
-                <div class="well">
-                    <h4>Filter</h4>
+            <form method="get" class="card d-inline-flex mb-2 bg-dark">
+                <div class="card-body text-light">
+                    <h4 class="card-title">Filter</h4>
                     <div class="row">
                         {% block form %}
                         {% endblock %}
                     </div>
-                    <button class="btn btn-primary" type="submit">Search</button>
+                    <button class="btn btn-primary btn-sm" type="submit">Search</button>
                 </div>
             </form>
             {% if object_list %}

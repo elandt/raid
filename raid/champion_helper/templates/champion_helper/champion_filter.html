@@ -1,33 +1,34 @@
 {% extends "champion_helper/index.html" %}
 {% load static %}
+{% load render_field from widget_tweaks %}
 
 {% block header %}
   <h1 class="display-1 text-center">Champion Summary</h1>
 {% endblock %}
 
 {% block form %}
-  <div class="form-group col-sm-3 col-md-2">
+  <div class="form-group col-sm-4 col-md-4">
     {{ filter.form.name.label_tag }}
-    {{ filter.form.name }}
+    {% render_field filter.form.name class="form-control" %}
   </div>
-  <div class="form-group col-sm-4 col-md-2">
+  <div class="form-group col-sm-4 col-md-4">
     {{ filter.form.faction.label_tag }}
-    {{ filter.form.faction }}
+    {% render_field filter.form.faction class="form-control" %}
   </div>
-  <div class="form-group col-sm-4 col-md-2">
+  <div class="form-group col-sm-4 col-md-4">
     {{ filter.form.faction__alliance.label_tag }}
-    {{ filter.form.faction__alliance }}
+    {% render_field filter.form.faction__alliance class="form-control" %}
   </div>
-  <div class="form-group col-sm-4 col-md-2">
+  <div class="form-group col-sm-4 col-md-4">
     {{ filter.form.rarity.label_tag }}
-    {{ filter.form.rarity }}
+    {% render_field filter.form.rarity class="form-control" %}
   </div>
-  <div class="form-group col-sm-4 col-md-2">
+  <div class="form-group col-sm-4 col-md-4">
     {{ filter.form.affinity.label_tag }}
-    {{ filter.form.affinity }}
+    {% render_field filter.form.affinity class="form-control" %}
   </div>
-  <div class="form-group col-sm-4 col-md-1">
+  <div class="form-group col-sm-4 col-md-4">
     {{ filter.form.type.label_tag }}
-    {{ filter.form.type }}
+    {% render_field filter.form.type class="form-control" %}
   </div>
 {% endblock %}
