@@ -1,16 +1,16 @@
 from django_filters import CharFilter, ChoiceFilter, FilterSet, ModelChoiceFilter
 
-from .models import Alliance, Champion, Faction, Location, Rating, RARITIES, Affinity
+import models
 
 
 class ChampionFilter(FilterSet):
     name = CharFilter(label="Name", lookup_expr="icontains")
     faction__alliance = ModelChoiceFilter(
-        label="Alliances", queryset=Alliance.objects.all(),
+        label="Alliances", queryset=models.Alliance.objects.all(),
     )
 
     class Meta:
-        model = Champion
+        model = models.Champion
         fields = [
             "name",
             "faction",
@@ -23,39 +23,35 @@ class ChampionFilter(FilterSet):
 
 class RatingFilter(FilterSet):
     champion__faction = ModelChoiceFilter(
-        label="Faction", queryset=Faction.objects.all(),
+        label="Faction", queryset=models.Faction.objects.all(),
     )
     champion__faction__alliance = ModelChoiceFilter(
-        label="Alliance", queryset=Alliance.objects.all(),
+        label="Alliance", queryset=models.Alliance.objects.all(),
     )
-    # champion__affinity = ModelChoiceFilter(
-    #     label="Affinity", queryset=Affinity.objects.all()
-    # )
     champion__rarity = ChoiceFilter(
-        label="Rarity", choices=RARITIES,
+        label="Rarity", choices=models.RARITIES,
     )
     location = ModelChoiceFilter(
-        label="Location", queryset=Location.objects.all()
+        label="Location", queryset=models.Location.objects.all()
     )
 
     class Meta:
-        model = Rating
+        model = models.Rating
         fields = [
             "champion__faction",
             "champion__faction__alliance",
             "champion__rarity",
-            # "champion__affinity",
             "location"
         ]
 
 
 class RatingFilterWithAffinity(RatingFilter):
     champion__affinity = ModelChoiceFilter(
-        label="Affinity", queryset=Affinity.objects.all()
+        label="Affinity", queryset=models.Affinity.objects.all()
     )
 
     class Meta:
-        model = Rating
+        model = models.Rating
         fields = [
             "champion__affinity"
         ]
