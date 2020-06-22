@@ -15,54 +15,60 @@ class IndexView(SingleTableMixin, FilterView):
     filterset_class = ChampionFilter
 
 
-# TODO: probably don't need FilterView here because it
-# would be a form for all of the tables
-
-
 class TeamSuggestionView(MultiTableMixin, FilterView):
     """
     Display team suggestions based on the selected inputs
     """
 
     model = Rating
-
-    # TODO: Filter displays, but does nothing...need to figure out
-    # why, and how to fix it.
-    filterset_class = RatingFilter
-
-    # TODO: Figure out what this should actually be. Need to apply
-    # sanitized input from a form
-    ratings_by_location = Rating.objects.all()
-    best_overall_team = ratings_by_location
-    best_force_team = ratings_by_location.filter(
-        champion__affinity__name="force"
-    )
-    best_magic_team = ratings_by_location.filter(
-        champion__affinity__name="magic"
-    )
-    best_spirit_team = ratings_by_location.filter(
-        champion__affinity__name="spirit"
-    )
-    best_void_team = ratings_by_location.filter(
-        champion__affinity__name="void",
-    )
-
     tables = [
         # Using attrs overrides any attrs defined in the table Meta class.
         # TODO: figure out how to dynamically set the table title? Adding
         # this (attrs={"title": "Overall Best"}) doesn't work
-        # TODO: Either need dynamic filtering of tables, or different tables
-        # dynamic filtering can probably be achieved through a form,
-        # and querysets?
-        RatingTable(best_overall_team),
-        RatingTable(best_force_team),
-        RatingTable(best_magic_team),
-        RatingTable(best_spirit_team),
-        RatingTable(best_void_team),
+        RatingTable,
+        RatingTable,
+        RatingTable,
+        RatingTable,
+        RatingTable,
     ]
     template_name = "champion_helper/teams.html"
-
     table_pagination = {"per_page": 5}
+    filterset_class = RatingFilter
+
+    def get_tables_data(self):
+        """
+        Return an array of table_data that should be used to populate each
+        table. Specifically, this will return an array containing 5 different
+        querysets based off of 1 filter for the page, and apply additional
+        static filters to each of the last 4 tables
+        """
+
+        self.filter = self.filterset_class(
+            self.request.GET,
+            queryset=super(TeamSuggestionView, self).get_tables_data(),
+        )
+
+        ratings_by_location = self.filter.qs
+        best_overall_team = ratings_by_location
+        best_force_team = ratings_by_location.filter(
+            champion__affinity__name="force"
+        )
+        best_magic_team = ratings_by_location.filter(
+            champion__affinity__name="magic"
+        )
+        best_spirit_team = ratings_by_location.filter(
+            champion__affinity__name="spirit"
+        )
+        best_void_team = ratings_by_location.filter(
+            champion__affinity__name="void",
+        )
+        return [
+            best_overall_team,
+            best_force_team,
+            best_magic_team,
+            best_spirit_team,
+            best_void_team
+        ]
 
 
 class GenericFilteredTableView(SingleTableView):
