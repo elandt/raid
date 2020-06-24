@@ -1,6 +1,6 @@
 {% extends "champion_helper/base.html" %}
 {% load static %}
-{% load render_table from django_tables2 %}
+
 
 {% block content %}
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -42,7 +42,8 @@
                 </div>
             </form>
             {% if object_list %}
-                {% render_table table %}
+                {% block data %}
+                {% endblock %}
             {% else %}
                 <p>No items are available.</p>
             {% endif %}

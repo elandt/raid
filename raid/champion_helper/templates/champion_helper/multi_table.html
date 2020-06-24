@@ -1,0 +1,10 @@
+{% extends "champion_helper/index.html" %}
+{% load static %}
+{% load django_tables2 %}
+
+{% block data %}
+    {% for table in tables %}
+        <!-- <h5>{{ table.title }}</h5> -->
+        {% render_table table %}
+    {% endfor %}
+{% endblock %}

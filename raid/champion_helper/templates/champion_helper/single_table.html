@@ -1,0 +1,7 @@
+{% extends "champion_helper/index.html" %}
+{% load static %}
+{% load render_table from django_tables2 %}
+
+{% block data %}
+    {% render_table table %}
+{% endblock %}
