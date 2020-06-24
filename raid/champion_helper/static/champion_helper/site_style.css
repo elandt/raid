@@ -3,3 +3,5 @@
 
 th, td { padding: 8px 16px; }
 th     { background:#eee; }
+
+.stickyFilter { position: sticky; top: 0; }
