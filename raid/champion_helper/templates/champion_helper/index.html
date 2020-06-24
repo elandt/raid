@@ -3,7 +3,8 @@
 
 
 {% block content %}
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+<!-- Adding fixed-top does what I want to the navbar, but also covers the sticky table header -->
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Raid Champion Assistant</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -25,29 +26,38 @@
             {% block header %}
             {% endblock %}
         </div>
-        <div class="col">
-            <form method="get" class="card navbar-expand-sm d-inline-flex mb-2 bg-dark">
-                <button class="navbar-toggler text-light" type="button" data-toggle="collapse" data-target="#filter-card" aria-controls="filter-card" aria-expanded="false" aria-label="Toggle navigation">
-                    Show Filter
-                </button>
-                <div class="collapse navbar-collapse" id="filter-card">
-                    <div class="card-body text-light">
-                        <h4 class="card-title">Filter</h4>
-                        <div class="row">
-                            {% block form %}
-                            {% endblock %}
+        <div class="row">
+            <div class="col-sm-2">
+                <form method="get" class="card navbar-expand-sm d-inline-flex mb-2 bg-dark stickyFilter">
+                    <button class="navbar-toggler text-light" type="button" data-toggle="collapse" data-target="#filter-card"
+                        aria-controls="filter-card" aria-expanded="false" aria-label="Toggle navigation">
+                        Show Filter
+                    </button>
+                    <div class="collapse navbar-collapse" id="filter-card">
+                        <div class="card-body text-light">
+                            <h4 class="card-title">Filter</h4>
+                            <div class="row">
+                                {% block form %}
+                                {% endblock %}
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-primary btn-sm" type="submit">Search</button>
+                                    <button class="btn btn-secondary btn-sm ml-1" type="reset">Reset</button>
+                                </div>
+                            </div>
                         </div>
-                        <button class="btn btn-primary btn-sm" type="submit">Search</button>
-                        <button class="btn btn-secondary btn-sm pull-right" type="reset">Reset</button>
                     </div>
-                </div>
-            </form>
-            {% if object_list %}
+                </form>
+            </div>
+            <div class="col">
+                {% if object_list %}
                 {% block data %}
                 {% endblock %}
-            {% else %}
+                {% else %}
                 <p>No items are available.</p>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

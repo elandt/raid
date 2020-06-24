@@ -7,19 +7,19 @@
 {% endblock %}
 
 {% block form %}
-  <div class="form-group col-sm-4 col-md-3">
+  <div class="form-group col-sm-12">
     {{ filter.form.champion__faction.label_tag }}
     {% render_field filter.form.champion__faction class="form-control" %}
   </div>
-  <div class="form-group col-sm-4 col-md-3">
+  <div class="form-group col-sm-12">
     {{ filter.form.champion__faction__alliance.label_tag }}
     {% render_field filter.form.champion__faction__alliance class="form-control" %}
   </div>
-  <div class="form-group col-sm-4 col-md-3">
+  <div class="form-group col-sm-12">
     {{ filter.form.champion__rarity.label_tag }}
     {% render_field filter.form.champion__rarity class="form-control" %}
   </div>
-  <div class="form-group col-sm-3 col-md-3">
+  <div class="form-group col-sm-12">
     {{ filter.form.location.label_tag }}
     {% render_field filter.form.location class="form-control" %}
   </div>
