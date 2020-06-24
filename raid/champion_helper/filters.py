@@ -1,6 +1,6 @@
 from django_filters import CharFilter, ChoiceFilter, FilterSet, ModelChoiceFilter
 
-from .models import Alliance, Champion, Faction, Location, Rating, RARITIES, Affinity
+from .models import Alliance, Champion, Faction, Location, Rating, RARITIES
 
 
 class ChampionFilter(FilterSet):
@@ -42,16 +42,4 @@ class RatingFilter(FilterSet):
             "champion__faction__alliance",
             "champion__rarity",
             "location"
-        ]
-
-
-class RatingFilterWithAffinity(RatingFilter):
-    champion__affinity = ModelChoiceFilter(
-        label="Affinity", queryset=Affinity.objects.all()
-    )
-
-    class Meta:
-        model = Rating
-        fields = [
-            "champion__affinity"
         ]
