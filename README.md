@@ -9,3 +9,7 @@ This is a Django project that is being designed to assist in team selection for 
 ## Disclaimer
 
 This is my first Django project outside the official Django tutorials. The outcome of those and the links to the tutorials can be found in my [django_tutorial](https://github.com/elandt/django_tutorial) repository.
+
+## Local Setup
+
+TBD
