@@ -8,9 +8,6 @@ from .models import Champion, Rating
 
 class ChampionTable(tables.Table):
     avg_rating = tables.Column(verbose_name="Average Rating")
-    # TODO: Determine if there's a sensible way to
-    # sort this column, or is disabling sorting the
-    # best option?
     ratings = tables.TemplateColumn(
         template_name="champion_helper/rating_list.html",
         orderable=False,
