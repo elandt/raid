@@ -4,4 +4,5 @@
 th, td { padding: 8px 16px; }
 th     { background:#eee; }
 
+/* TODO: Figure out how to get this to hit the bottom of the navbar, and not slide underneath then stop */
 .stickyFilter { position: sticky; top: 0; }
