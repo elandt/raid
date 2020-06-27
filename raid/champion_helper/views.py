@@ -7,14 +7,6 @@ from .filters import ChampionFilter, RatingFilter
 
 
 # Create your views here.
-class IndexView(SingleTableMixin, FilterView):
-    model = Champion
-    table_class = ChampionTable
-    template_name = "champion_helper/index.html"
-
-    filterset_class = ChampionFilter
-
-
 class TeamSuggestionView(MultiTableMixin, FilterView):
     """
     Display team suggestions based on the selected inputs
