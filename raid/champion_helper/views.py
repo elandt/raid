@@ -1,9 +1,9 @@
-from django_tables2.views import SingleTableMixin, SingleTableView, MultiTableMixin
+from django_tables2.views import SingleTableView, MultiTableMixin
 from django_filters.views import FilterView
 
-from .models import Champion, Rating
-from .tables import ChampionTable, RatingTable
-from .filters import ChampionFilter, RatingFilter
+from .models import Rating
+from .tables import RatingTable
+from .filters import RatingFilter
 
 
 # Create your views here.
