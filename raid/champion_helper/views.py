@@ -24,7 +24,7 @@ class TeamSuggestionView(MultiTableMixin, FilterView):
         RatingTable,
     ]
     template_name = "champion_helper/rating_filter.html"
-    table_pagination = {"per_page": 5}
+    table_pagination = {"per_page": 10}
     filterset_class = RatingFilter
 
     def get_tables_data(self):
