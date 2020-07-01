@@ -1,6 +1,6 @@
 # raid
 
-This is a Django project that is being designed to assist in team selection for [Raid: Shadow Legends](https://raidshadowlegends.com/).
+This is a Django project that is being designed to assist in team selection for [Raid: Shadow Legends](https://raidshadowlegends.com/). The suggestion logic is based on in-game, user provided ratings that are taken from the game and manually updated in a database. At the time of creation, Raid: Shadow Legends did not have an API available to use to pull these ratings automatically. That being the case, all ratings should be considered stale by the time they are in the datebase due to the manual nature of the updates.
 
 ## Goals of the project
 
