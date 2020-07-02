@@ -2,6 +2,6 @@
 .tableFixHead thead th { position: sticky; top: 55px; }
 
 th, td { padding: 8px 16px; }
-th     { background:#eee; }
+th     { background:#eee; color: black;}
 
 .stickyFilter { position: sticky; top: 55px; }
