@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views, models, tables, filters
 
@@ -13,4 +13,6 @@ urlpatterns = [
         filter_class=filters.ChampionFilter,
     ), name='index'),
     path("teams", views.TeamSuggestionView.as_view(), name="teams"),
+    # Could change this path to be something else later
+    path("accounts/", include('django.contrib.auth.urls')),
 ]
