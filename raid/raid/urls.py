@@ -19,4 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path("", include("champion_helper.urls")),
     path("admin/", admin.site.urls),
+    # Could change this path to be something else later
+    path("accounts/", include('django.contrib.auth.urls')),
 ]
