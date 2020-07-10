@@ -5,6 +5,8 @@ from decimal import Decimal
 
 # Create your models here.
 
+# TODO: Add model for a given User's champions
+
 # TODO: figure out how I want the FKs to work,
 # and how to limit the relationship between
 # factions and allicances
