@@ -6,6 +6,7 @@ from decimal import Decimal
 # Create your models here.
 
 # TODO: Add model for a given User's champions
+# https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#substituting-a-custom-user-model
 
 # TODO: figure out how I want the FKs to work,
 # and how to limit the relationship between
