@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q, F, Avg
+from django.conf import settings
 
 from decimal import Decimal
 
@@ -161,9 +162,6 @@ class Champion(models.Model):
         return avg.quantize(Decimal("1.0"))
 
     # Other possible fields: skills
-    # TODO: If adding number owned, or max power,
-    # create new models to allow users to have
-    # their own set of champions
 
     def __str__(self):
         return self.name
@@ -244,3 +242,17 @@ class Rating(models.Model):
                 name="unique_champion_location_pair"
             )
         ]
+
+
+class UserChampion(models.Model):
+    """
+    Represents a Champion that a given user owns.
+    """
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    champion = models.ForeignKey(Champion, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.owner.first_name}'s rating for {self.champion}"
