@@ -128,3 +128,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/'
+
+# TODO: set the email address auto-emails come from
+DEFAULT_FROM_EMAIL = ''
