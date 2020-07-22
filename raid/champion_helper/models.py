@@ -11,7 +11,7 @@ from decimal import Decimal
 
 # TODO: figure out how I want the FKs to work,
 # and how to limit the relationship between
-# factions and allicances
+# factions and alliances
 
 RARITIES = (
         ("c", "Common"),
