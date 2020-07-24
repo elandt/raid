@@ -1,7 +1,7 @@
 from django_tables2.views import SingleTableView, MultiTableMixin
 from django_filters.views import FilterView
 
-from .models import Rating
+from .models import Rating, UserChampion
 from .tables import RatingTable
 from .filters import RatingFilter
 
@@ -80,3 +80,5 @@ class GenericFilteredTableView(SingleTableView):
         ).get_context_data(**kwargs)
         context["filter"] = self.filter
         return context
+
+# TODO: Add views for profile, adding/removing user champions, and other user related views.
