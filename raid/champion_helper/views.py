@@ -1,7 +1,7 @@
 from django_tables2.views import SingleTableView, MultiTableMixin
 from django_filters.views import FilterView
 
-from .models import Rating, UserChampion
+from .models import Rating, Champion
 from .tables import RatingTable
 from .filters import RatingFilter
 
@@ -71,7 +71,7 @@ class GenericFilteredTableView(SingleTableView):
             self.request.GET,
             queryset=super(GenericFilteredTableView, self).get_table_data(),
         )
-        return self.filter.qs
+        return self.filter.qs.order_by("-avg_rating") if self.filter.qs.model is Champion else self.filter.qs
 
     def get_context_data(self, **kwargs):
         context = super(
