@@ -9,9 +9,9 @@ urlpatterns = [
     path("", views.GenericFilteredTableView.as_view(
         model=models.Champion,
         table_class=tables.ChampionTable,
-        template_name='champion_helper/champion_filter.html',
+        template_name="champion_helper/champion_filter.html",
         filter_class=filters.ChampionFilter,
-    ), name='index'),
+    ), name="index"),
     path("teams", views.TeamSuggestionView.as_view(), name="teams"),
     
 ]
