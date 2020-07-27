@@ -99,7 +99,7 @@ class UserChampionTable(tables.Table):
 
     class Meta:
         model = UserChampion
-        template_name = "django_tables2/bootstrap4.html
+        template_name = "django_tables2/bootstrap4.html"
         fields = (
             "champion.name",
             "champion.faction",
