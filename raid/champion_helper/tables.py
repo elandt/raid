@@ -3,7 +3,7 @@ from django.db.models import Avg
 
 from decimal import Decimal
 
-from .models import Champion, Rating
+from .models import Champion, Rating, UserChampion
 
 
 class ChampionTable(tables.Table):
@@ -68,5 +68,45 @@ class RatingTable(tables.Table):
             "champion.type",
             "location",
             "value",
+        )
+        attrs = {"class": "table table-striped table-dark tableFixHead"}
+
+
+# TODO: Can I just extend the Champion Table and make some updates rather than duplicate most things?
+class UserChampionTable(tables.Table):
+    avg_rating = tables.Column(verbose_name="Average Rating")
+    ratings = tables.TemplateColumn(
+        template_name="champion_helper/rating_list.html",
+        orderable=False,
+    )
+
+    def render_avg_rating(self, value):
+        """
+        Rounds the display of the Average Rating to 1 decimal place.
+        """
+        return Decimal(value).quantize(Decimal("1.0"))
+
+    def order_avg_rating(self, queryset, is_descending):
+        """
+        Enables the Average Rating table column to
+        be sortable. The average is returned, and
+        sorted as a float.
+        """
+        queryset = queryset.annotate(avg_rating=Avg("rating__value")).order_by(
+            ("-" if is_descending else "") + "avg_rating"
+        )
+        return (queryset, True)
+
+    class Meta:
+        model = UserChampion
+        template_name = "django_tables2/bootstrap4.html"
+        fields = (
+            "champion.name",
+            "champion.faction",
+            "champion.faction.alliance",
+            "champion.rarity",
+            "champion.affinity",
+            "champion.type",
+            "avg_rating",
         )
         attrs = {"class": "table table-striped table-dark tableFixHead"}

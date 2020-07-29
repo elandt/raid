@@ -1,0 +1,41 @@
+{% extends "champion_helper/base.html" %}
+
+{% block content %}
+<div class="container-fluid text-light">
+    <div class="align-items-center justify-content-center text-center">
+        {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+        {% endif %}
+    </div>
+    <div class="row align-items-center justify-content-center text-center">
+
+        {% if next %}
+        {% if user.is_authenticated %}
+        <p>Your account doesn't have access to this page. To proceed,
+            please login with an account that has access.</p>
+        {% else %}
+        <p>Please login to see this page.</p>
+        {% endif %}
+        {% endif %}
+
+        <form method="post" class="form-signin" action="{% url 'login' %}">
+            {% csrf_token %}
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="inputUsername" class="sr-only">{{ form.username.label_tag }}</label>
+            <input type="text" id="inputUsername" class="form-control" placeholder="Username" name="username" required autofocus>
+            <label for="inputPassword" class="sr-only">{{ form.password.label_tag }}</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+            <!-- I'll need to remove this or implement it -->
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-lg btn-secondary btn-block" type="submit">Sign in</button>
+            <input type="hidden" name="next" value="{{ next }}">
+            {# Assumes you setup the password_reset view in your URLconf #}
+            <a href="{% url 'password_reset' %}">Lost password?</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

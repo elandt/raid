@@ -42,16 +42,24 @@ class TeamSuggestionView(MultiTableMixin, FilterView):
 
         ratings_by_location = self.filter.qs
         best_overall_team = ratings_by_location
-        best_force_team = ratings_by_location.filter(champion__affinity__name="force")
-        best_magic_team = ratings_by_location.filter(champion__affinity__name="magic")
-        best_spirit_team = ratings_by_location.filter(champion__affinity__name="spirit")
-        best_void_team = ratings_by_location.filter(champion__affinity__name="void",)
+        best_force_team = ratings_by_location.filter(
+            champion__affinity__name="force"
+        )
+        best_magic_team = ratings_by_location.filter(
+            champion__affinity__name="magic"
+        )
+        best_spirit_team = ratings_by_location.filter(
+            champion__affinity__name="spirit"
+        )
+        best_void_team = ratings_by_location.filter(
+            champion__affinity__name="void",
+        )
         return [
             best_overall_team,
             best_force_team,
             best_magic_team,
             best_spirit_team,
-            best_void_team,
+            best_void_team
         ]
 
 
@@ -63,13 +71,14 @@ class GenericFilteredTableView(SingleTableView):
             self.request.GET,
             queryset=super(GenericFilteredTableView, self).get_table_data(),
         )
-        return (
-            self.filter.qs.order_by("-avg_rating")
-            if self.filter.qs.model is Champion
-            else self.filter.qs
-        )
+        return self.filter.qs.order_by("-avg_rating") if self.filter.qs.model is Champion else self.filter.qs
 
     def get_context_data(self, **kwargs):
-        context = super(GenericFilteredTableView, self).get_context_data(**kwargs)
+        context = super(
+            GenericFilteredTableView,
+            self
+        ).get_context_data(**kwargs)
         context["filter"] = self.filter
         return context
+
+# TODO: Add views for profile, adding/removing user champions, and other user related views.
