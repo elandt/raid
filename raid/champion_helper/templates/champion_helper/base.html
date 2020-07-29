@@ -22,34 +22,13 @@
           <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
-          <ul class="navbar-nav mr-auto">
-              <li class="nav-item">
-                  <a class="nav-link" href="/">Champions</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/teams">Teams</a>
-              </li>
-          </ul>
-          <ul class="navbar-nav mx-2">
-            <li class="nav-item dropdown dropdown-dark">
-            {% if user.is_authenticated %}
-              <!-- TODO: need to actually have a profile template/url...not sure if accounts/profile is correct -->
-              <a class="nav-link" href="#" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hello, {{ user.get_username }}</a>
-              <div class="dropdown-menu bg-dark" aria-labelledby="user-dropdown">
-                <a class="dropdown-item text-light" href="#">Profile</a>
-                <a class="dropdown-item text-light" href="/accounts/logout">Logout</a>
-              </div>
-              {% else %}
-              <a class="nav-link" href="/accounts/login">Login</a>
-              {% endif %}  
-            </li>
-            <!-- <li class="nav-item">
-              {% if user.is_authenticated %}
-              <a class="nav-link" href="/accounts/logout">Logout</a>
-              {% else %}
-              <a class="nav-link" href="/accounts/login">Login</a>
-              {% endif %}
-            </li> -->
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <a class="nav-link" href="/">Champions</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/teams">Teams</a>
+          </li>
         </ul>
       </div>
     </nav>
