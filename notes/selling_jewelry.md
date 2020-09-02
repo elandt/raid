@@ -1,0 +1,1 @@
+# Selling Jewelry - 7/17/2020 - https://www.youtube.com/watch?v=Pg8l9XtSyyI
